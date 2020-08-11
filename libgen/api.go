@@ -157,7 +157,7 @@ func GetDetails(options *GetDetailsOptions) ([]*Book, error) {
 		if options.RequireAuthor && book.Author == "" {
 			continue
 		}
-		if options.Extension != "" && options.Extension != book.Extension {
+		if options.Extension != "" && !contains(options.Extension, book.Extension) {
 			continue
 		}
 		if options.Year != 0 {
@@ -434,4 +434,15 @@ func RemoveQuotes(s string) string {
 	s = s[1:]
 	s = s[:len(s)-1]
 	return s
+}
+
+// contains is a helper function to check if a comma-separated list contains
+// a certain word
+func contains(l, s string) bool {
+	for _, w := range strings.Split(l, ",") {
+		if w == s {
+			return true
+		}
+	}
+	return false
 }
